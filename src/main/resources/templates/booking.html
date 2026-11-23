@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Запись на приём</title>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="login-container" style="align-items: flex-start; padding-top: 40px;">
+        <div class="login-card" style="max-width: 600px;">
+            <h2>🐾 Запись на приём</h2>
+
+            <div th:if="${success}" class="success">
+                <span th:text="${success}"></span>
+            </div>
+
+            <form th:action="@{/booking}" method="post">
+                <div class="field">
+                    <label>Кличка питомца</label>
+                    <input type="text" name="petName" placeholder="Барсик" required>
+                </div>
+
+                <div class="field">
+                    <label>Вид животного</label>
+                    <select name="speciesId" required>
+                        <option value="">-- Выберите вид --</option>
+                        <option th:each="s : ${species}" th:value="${s.id}" th:text="${s.name}"></option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Врач</label>
+                    <select name="vetId" required>
+                        <option value="">-- Выберите врача --</option>
+                        <option th:each="v : ${vets}" th:value="${v.id}" th:text="${v.firstName + ' ' + v.lastName}"></option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Услуга</label>
+                    <select name="serviceId" required>
+                        <option value="">-- Выберите услугу --</option>
+                        <option th:each="s : ${services}" th:value="${s.id}" th:text="${s.name + ' — ' + s.price + ' ₽'}"></option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label>Дата и время</label>
+                    <input type="datetime-local" name="dateTime" required>
+                </div>
+
+                <div class="buttons">
+                    <button type="submit" class="add-btn">Записаться</button>
+                    <a href="/booking/my" class="button-action">Мои записи</a>
+                    <a href="/" class="button-action">На главную</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Назначения</title>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="sidebar">
+        <ul class="menu">
+            <li><a href="/admin">Главная</a></li>
+            <li><a href="/pets">Питомцы</a></li>
+            <li><a href="/vets">Врачи</a></li>
+            <li><a href="/appointments">Записи</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/users/manage-roles">Управление ролями</a></li>
+            <li><a href="/roles">Роли</a></li>
+            <li><a href="/specialities">Специальностей</a></li>
+            <li><a href="/species">Виды животных</a></li>
+            <li><a href="/breeds">Породы</a></li>
+            <li><a href="/services">Услуги</a></li>
+            <li><a href="/prescriptions" class="active">Назначения</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="topbar">
+            <h2>Назначения</h2>
+            <div class="user-profile">Администратор</div>
+        </div>
+
+        <div class="table-container">
+            <div class="search-container">
+                <form th:action="@{/prescriptions/search}" method="get">
+                    <input type="text" name="keyword" placeholder="Поиск по препарату или ID" th:value="${keyword}">
+                    <button type="submit" class="add-btn">Найти</button>
+                </form>
+            </div>
+            <h3>Список назначений</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Препарат</th>
+                        <th>Дозировка</th>
+                        <th>Приём</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="prescription : ${prescriptions}">
+                        <td th:text="${prescription.id}">1</td>
+                        <td th:text="${prescription.medication}">Амоксициллин</td>
+                        <td th:text="${prescription.dosage}">1 таблетка</td>
+                        <td th:text="${prescription.appointment != null ? prescription.appointment.id : '—'}">1</td>
+                        <td class="action-buttons">
+                            <a th:href="@{/prescriptions/edit/{id}(id=${prescription.id})}" class="btn-edit">Изменить</a>
+                            <a th:href="@{/prescriptions/delete/{id}(id=${prescription.id})}" class="btn-delete">Удалить</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-container">
+            <h3>Добавить назначение</h3>
+            <form th:action="@{/prescriptions/save}" th:object="${prescription}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <div class="field">
+                    <label>Название препарата</label>
+                    <input type="text" th:field="*{medication}" placeholder="Амоксициллин">
+                    <span th:if="${#fields.hasErrors('medication')}" th:errors="*{medication}" class="error"></span>
+                </div>
+                <div class="field">
+                    <label>Дозировка</label>
+                    <input type="text" th:field="*{dosage}" placeholder="1 таблетка 2 раза в день">
+                    <span th:if="${#fields.hasErrors('dosage')}" th:errors="*{dosage}" class="error"></span>
+                </div>
+                <div class="field">
+                    <label>Приём</label>
+                    <select th:field="*{appointment}">
+                        <option value="">-- Выберите приём --</option>
+                        <option th:each="a : ${appointments}" th:value="${a.id}" th:text="${a.id}"></option>
+                    </select>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="add-btn">Сохранить</button>
+                    <a href="/prescriptions" class="button-action">Очистить</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои записи</title>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="sidebar">
+        <ul class="menu">
+            <li><a href="/">Главная</a></li>
+            <li><a href="/booking">Записаться</a></li>
+            <li><a href="/booking/my" class="active">Мои записи</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="topbar">
+            <h2>Мои записи</h2>
+            <div class="user-profile">Клиент</div>
+        </div>
+
+        <div class="table-container">
+            <h3>Список записей</h3>
+
+            <p th:if="${appointments == null || appointments.isEmpty()}" style="color: #666; padding: 20px;">
+                У вас пока нет записей. <a href="/booking" style="color: #a44e6c;">Записаться на приём</a>
+            </p>
+
+            <table th:if="${appointments != null && !appointments.isEmpty()}">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Дата</th>
+                        <th>Питомец</th>
+                        <th>Врач</th>
+                        <th>Услуга</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="appointment : ${appointments}">
+                        <td th:text="${appointment.id}">1</td>
+                        <td th:text="${appointment.dateTime}">20.09.2026</td>
+                        <td th:text="${appointment.pet != null ? appointment.pet.name : '—'}">Барсик</td>
+                        <td th:text="${appointment.vet != null ? appointment.vet.lastName : '—'}">Иванов</td>
+                        <td th:text="${appointment.service != null ? appointment.service.name : '—'}">Консультация</td>
+                        <td th:text="${appointment.status}">Запланировано</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

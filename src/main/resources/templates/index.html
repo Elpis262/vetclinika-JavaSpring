@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinary clinic</title>
+    <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <header>
+        <a href="/" class="logo">🐾 Paw Care</a>
+        <a href="/" class="head">Главная</a>
+        <a href="/services" class="head">Услуги</a>
+        <a href="/vets" class="head">Врачи</a>
+        <a href="/booking" class="head">Запись</a>
+        <a href="/" class="head">О клинике</a>
+        <a href="/" class="head">Контакты</a>
+
+        <!-- Если вошёл -->
+        <div th:if="${username}" style="display: flex; gap: 10px; align-items: center;">
+            <span class="head">Привет, <b th:text="${username}"></b>!</span>
+            <a href="/admin" class="head zapis" th:if="${role == 'ROLE_ADMIN'}">Админка</a>
+            <a href="/booking/my" class="head">Мои записи</a>
+
+            <!-- Выйти через форму (POST) -->
+            <form th:action="@{/logout}" method="post" style="display: inline; margin: 0;">
+                <button type="submit" class="head zapis" style="border: none; cursor: pointer; font-family: inherit;">Выйти</button>
+            </form>
+        </div>
+
+        <!-- Если не вошёл -->
+        <div th:unless="${username}" style="display: flex; gap: 10px;">
+            <a href="/login" class="head zapis">Войти</a>
+            <a href="/register" class="head">Регистрация</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="shablon">
+            <h1 class="zagolovok">Забота о ваших питомцах</h1>
+            <p class="paragraf">
+                Профессиональная ветеринарная помощь и забота<br>
+                о здоровье ваших любимцев<br>
+            </p>
+            <a href="/booking" class="zapis">Записаться на приём</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="foot">
+            <a href="/services" class="knopki k1">Услуги</a>
+            <a href="/vets" class="knopki">Врачи</a>
+            <a href="/booking" class="knopki k2">Запись на приём</a>
+        </div>
+    </footer>
+</body>
+</html>

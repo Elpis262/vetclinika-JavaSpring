@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <h2>🐾 Paw Care</h2>
+            <h3>Вход в систему</h3>
+
+            <div th:if="${param.error}" class="error">
+                Неверный логин или пароль
+            </div>
+            <div th:if="${param.logout}" class="success">
+                Вы успешно вышли
+            </div>
+
+            <form th:action="@{/login}" method="post">
+                <div class="field">
+                    <label>Логин</label>
+                    <input type="text" name="username" placeholder="admin" required>
+                </div>
+                <div class="field">
+                    <label>Пароль</label>
+                    <input type="password" name="password" placeholder="••••••" required>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="add-btn">Войти</button>
+                </div>
+                <p style="margin-top: 15px; text-align: center;">
+                    Нет аккаунта? <a href="/register" style="color: #a44e6c;">Зарегистрироваться</a>
+                </p>
+                <p style="margin-top: 10px; text-align: center;">
+                    <a href="/" style="color: #a44e6c;">← Вернуться на главную</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

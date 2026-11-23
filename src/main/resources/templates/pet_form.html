@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Питомцы</title>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="sidebar">
+        <ul class="menu">
+            <li><a href="/admin">Главная</a></li>
+            <li><a href="/pets" class="active">Питомцы</a></li>
+            <li><a href="/vets">Врачи</a></li>
+            <li><a href="/appointments">Записи</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/users/manage-roles">Управление ролями</a></li>
+            <li><a href="/roles">Роли</a></li>
+            <li><a href="/specialities">Специальностей</a></li>
+            <li><a href="/species">Виды животных</a></li>
+            <li><a href="/breeds">Породы</a></li>
+            <li><a href="/services">Услуги</a></li>
+            <li><a href="/prescriptions">Назначения</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="topbar">
+            <h2>Питомцы</h2>
+            <div class="user-profile">Администратор</div>
+        </div>
+
+        <div class="table-container">
+            <div class="search-container">
+                <form th:action="@{/pets/search}" method="get">
+                    <input type="text" name="keyword" placeholder="Поиск по кличке или ID" th:value="${keyword}">
+                    <button type="submit" class="add-btn">Найти</button>
+                </form>
+            </div>
+            <h3>Список питомцев</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Кличка</th>
+                        <th>Вид</th>
+                        <th>Порода</th>
+                        <th>Возраст</th>
+                        <th>Владелец</th>
+                        <th>Окрас</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pet : ${pets}">
+                        <td th:text="${pet.id}">1</td>
+                        <td th:text="${pet.name}">Барсик</td>
+                        <td th:text="${pet.species != null ? pet.species.name : '—'}">Кот</td>
+                        <td th:text="${pet.breed != null ? pet.breed.name : '—'}">Британская</td>
+                        <td th:text="${pet.age}">3</td>
+                        <td th:text="${pet.owner != null ? pet.owner.username : '—'}">ivanov</td>
+                        <td th:text="${pet.color}">Серый</td>
+                        <td class="action-buttons">
+                            <a th:href="@{/pets/edit/{id}(id=${pet.id})}" class="btn-edit">Изменить</a>
+                            <a th:href="@{/pets/delete/{id}(id=${pet.id})}" class="btn-delete">Удалить</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-container">
+            <h3>Добавить питомца</h3>
+            <form th:action="@{/pets/save}" th:object="${pet}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <div class="field">
+                    <label>Кличка</label>
+                    <input type="text" th:field="*{name}" placeholder="Барсик">
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+                </div>
+                <div class="field">
+                    <label>Возраст</label>
+                    <input type="number" th:field="*{age}" placeholder="3" min="0">
+                    <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}" class="error"></span>
+                </div>
+                <div class="field">
+                    <label>Окрас</label>
+                    <input type="text" th:field="*{color}" placeholder="Серый">
+                </div>
+                <div class="field">
+                    <label>Владелец</label>
+                    <select th:field="*{owner}">
+                        <option value="">-- Выберите владельца --</option>
+                        <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.username}"></option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Порода</label>
+                    <select th:field="*{breed}">
+                        <option value="">-- Выберите породу --</option>
+                        <option th:each="b : ${breeds}" th:value="${b.id}" th:text="${b.name}"></option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Вид</label>
+                    <select th:field="*{species}">
+                        <option value="">-- Выберите вид --</option>
+                        <option th:each="s : ${species}" th:value="${s.id}" th:text="${s.name}"></option>
+                    </select>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="add-btn">Сохранить</button>
+                    <a href="/pets" class="button-action">Очистить</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

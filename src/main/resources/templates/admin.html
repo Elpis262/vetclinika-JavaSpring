@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Админ-панель</title>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="sidebar">
+        <ul class="menu">
+            <li><a href="/admin" class="active">Главная</a></li>
+            <li><a href="/pets">Питомцы</a></li>
+            <li><a href="/vets">Врачи</a></li>
+            <li><a href="/appointments">Записи</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/users/manage-roles">Управление ролями</a></li>
+            <li><a href="/roles">Роли</a></li>
+            <li><a href="/specialities">Специальностей</a></li>
+            <li><a href="/species">Виды животных</a></li>
+            <li><a href="/breeds">Породы</a></li>
+            <li><a href="/services">Услуги</a></li>
+            <li><a href="/prescriptions">Назначения</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="topbar">
+            <h2>Главная</h2>
+            <div class="user-profile">Администратор</div>
+        </div>
+
+        <div class="table-container">
+            <h3>Добро пожаловать в админ-панель</h3>
+            <p style="padding: 20px; color: #666;">
+                Выберите раздел в меню слева для управления данными клиники.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

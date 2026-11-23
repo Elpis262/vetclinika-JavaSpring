@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Врачи</title>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="sidebar">
+        <ul class="menu">
+            <li><a href="/admin">Главная</a></li>
+            <li><a href="/pets">Питомцы</a></li>
+            <li><a href="/vets" class="active">Врачи</a></li>
+            <li><a href="/appointments">Записи</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/users/manage-roles">Управление ролями</a></li>
+            <li><a href="/roles">Роли</a></li>
+            <li><a href="/specialities">Специальностей</a></li>
+            <li><a href="/species">Виды животных</a></li>
+            <li><a href="/breeds">Породы</a></li>
+            <li><a href="/services">Услуги</a></li>
+            <li><a href="/prescriptions">Назначения</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="topbar">
+            <h2>Врачи</h2>
+            <div class="user-profile">Администратор</div>
+        </div>
+
+        <div class="table-container">
+            <div class="search-container">
+                <form th:action="@{/vets/search}" method="get">
+                    <input type="text" name="keyword" placeholder="Поиск по имени или ID" th:value="${keyword}">
+                    <button type="submit" class="add-btn">Найти</button>
+                </form>
+            </div>
+            <h3>Список врачей</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Телефон</th>
+                        <th>Специальность</th>
+                        <th>Статус</th>
+                        <th>Пользователь</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="vet : ${vets}">
+                        <td th:text="${vet.id}">1</td>
+                        <td th:text="${vet.firstName}">Иван</td>
+                        <td th:text="${vet.lastName}">Иванов</td>
+                        <td th:text="${vet.phone}">+7-900-000-00-00</td>
+                        <td th:text="${vet.speciality != null ? vet.speciality.name : '—'}">Терапевт</td>
+                        <td th:text="${vet.status}">active</td>
+                        <td th:text="${vet.user != null ? vet.user.username : '—'}">doctor1</td>
+                        <td class="action-buttons">
+                            <a th:href="@{/vets/edit/{id}(id=${vet.id})}" class="btn-edit">Изменить</a>
+                            <a th:href="@{/vets/delete/{id}(id=${vet.id})}" class="btn-delete">Удалить</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-container">
+            <h3>Добавить врача</h3>
+            <form th:action="@{/vets/save}" th:object="${vet}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <div class="field">
+                    <label>Имя</label>
+                    <input type="text" th:field="*{firstName}" placeholder="Иван">
+                    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error"></span>
+                </div>
+                <div class="field">
+                    <label>Фамилия</label>
+                    <input type="text" th:field="*{lastName}" placeholder="Иванов">
+                    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></span>
+                </div>
+                <div class="field">
+                    <label>Телефон</label>
+                    <input type="text" th:field="*{phone}" placeholder="+7-900-123-45-67">
+                    <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error"></span>
+                </div>
+                <div class="field">
+                    <label>Специальность</label>
+                    <select th:field="*{speciality}">
+                        <option value="">-- Выберите специальность --</option>
+                        <option th:each="s : ${specialities}" th:value="${s.id}" th:text="${s.name}"></option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Статус</label>
+                    <input type="text" th:field="*{status}" placeholder="active">
+                    <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}" class="error"></span>
+                </div>
+                <div class="field">
+                    <label>Пользователь</label>
+                    <select th:field="*{user}">
+                        <option value="">-- Выберите пользователя --</option>
+                        <option th:each="u : ${users}" th:value="${u.id}" th:text="${u.username}"></option>
+                    </select>
+                </div>
+                <div class="buttons">
+                    <button type="submit" class="add-btn">Сохранить</button>
+                    <a href="/vets" class="button-action">Очистить</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

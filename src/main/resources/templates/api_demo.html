@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>API Demo</title>
+    <link rel="stylesheet" href="/admin.css">
+</head>
+<body>
+    <div class="sidebar">
+        <ul class="menu">
+            <li><a href="/admin">Главная</a></li>
+            <li><a href="/vets">Врачи</a></li>
+            <li><a href="/pets">Питомцы</a></li>
+            <li><a href="/appointments">Записи</a></li>
+            <li><a href="/users">Пользователи</a></li>
+            <li><a href="/users/manage-roles">Управление ролями</a></li>
+            <li><a href="/admin/api-demo" class="active">API Demo</a></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="topbar">
+            <h2>API Demo — данные через RestTemplate</h2>
+            <div class="user-profile">Администратор</div>
+        </div>
+
+
+        <div class="table-container">
+            <h3>Врачи (из /api/vets)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Телефон</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="vet : ${vets}">
+                        <td th:text="${vet.id}">1</td>
+                        <td th:text="${vet.firstName}">Иван</td>
+                        <td th:text="${vet.lastName}">Иванов</td>
+                        <td th:text="${vet.phone}">+79991110000</td>
+                        <td th:text="${vet.status}">active</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container" style="margin-top: 20px;">
+            <h3>Питомцы (из /api/pets)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Кличка</th>
+                        <th>Возраст</th>
+                        <th>Окрас</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="pet : ${pets}">
+                        <td th:text="${pet.id}">1</td>
+                        <td th:text="${pet.name}">Барсик</td>
+                        <td th:text="${pet.age}">3</td>
+                        <td th:text="${pet.color}">Серый</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-container" style="margin-top: 20px;">
+            <h3>Записи (из /api/appointments)</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Дата и время</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="appointment : ${appointments}">
+                        <td th:text="${appointment.id}">1</td>
+                        <td th:text="${appointment.dateTime}">2025-03-15 12:00</td>
+                        <td th:text="${appointment.status}">Запланировано</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
